@@ -1,0 +1,28 @@
+clear 
+close all
+
+restoredefaultpath 
+addpath 'model' 'documentation'
+
+prefix = '';
+suffix = '';
+result_path = '../result';
+
+
+params = {'n_group', 4 , false, 'Activity group'
+    'N', 250000, false, 'Number of MSM in the Netherlands'
+    'result_path', result_path, false, 'Path for saving the result files'
+    'prefix', prefix, false, 'Prefix'
+    'suffix', suffix, false, 'Suffix'
+    'n_comp', 14, false, 'The number of compartments'
+    't_init', datetime(2022, 4, 27), false, 'Initial date of simulation'
+    't_termi', datetime(2022, 7, 25), false, 'Terminal date of simulation'
+    'behavioral_adaptation', 'july', false, 'Behavioral Adaptation'
+    'dt', 1, false, 'Time step per day'};
+
+
+parameter = params2parameter(params);
+
+
+%%
+parameter.y0 = zeros(params.n_group, params.n_comp);

@@ -11,7 +11,7 @@ alpha = 0.7;       % 무증상 감염자의 비율 (가정)
 E0 = 0;
 Ia0 = 1000;
 Is0 = 1;
-R0 = 50000000*0.03/4; % 1979년 이전 출생자.
+R0 = N*2/5; % 1979년 이전 출생자.
 S0 = N-E0-Ia0-Is0-R0;
 y0 = [S0, E0, Ia0, Is0, R0];
 
@@ -38,7 +38,7 @@ days = 1:476;
 
 
 %% Temporary
-beta_temp = 0.02;
+beta_temp = 0.03;
 beta_a = beta_temp;
 beta_s = beta_temp;
 [t, y] = ode45(@(t, y) SEIR_model(t, y, N, beta_a, beta_s, sigma, gamma_a, gamma_s, alpha), days, y0);
@@ -83,7 +83,9 @@ beta_estimate = fminsearch(@(beta) objective(beta, N, sigma, gamma_a, gamma_s, a
 
 % 추정된 파라미터로 SEIR 모델 실행
 beta_a = beta_estimate;
-beta_s = beta_estimate;
+beta_s = beta_estimate;result
+src
+reproducr_paper.m
 [t, y] = ode45(@(t, y) SEIR_model(t, y, N, beta_a, beta_s, sigma, gamma_a, gamma_s, alpha), days, y0);
 
 % 예측된 주간 확진자 수
