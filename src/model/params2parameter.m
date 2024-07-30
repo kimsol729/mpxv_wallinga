@@ -94,7 +94,7 @@ params_progression = {'mu', 1 / 50 / 365 , false, '$\mu$'
 %% Set parmeter the depend on the Sexual Activity Group
 
 parmas_msm = {'N_rate', [0.451, 0.364, 0.177, 0.007], false, 'Rate in specific activity group'
-    'alpha_m', [0.1, 0.2, 0.7, 0.7] ./ 365, false, 'Rate of forming main partnership per year'
+    'alpha_m', [0.1, 0.2, 0.7, 0.7], false, 'Rate of forming main partnership per year'
     'u', [0.03, 0.06, 0.14, 0.14], false, 'Number of sex contacts per main partner per day'
     'q', [0.60, 0.51, 0.54, 0.42], false, 'Rate with main regular partner'
     'alpha_c', [0.006, 0.055, 0.139, a_c_4_], false, 'Number of casual partners per day'};

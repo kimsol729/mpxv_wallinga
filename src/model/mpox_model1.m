@@ -10,8 +10,8 @@ mu_d_ = parameter.mu_d;
 
 T2_date_ = parameter.T2_date;
 t_init_ = parameter.t_init;
-dt_ = parameter.dt;
-T2_time = (days(T2_date_-t_init_) + 1)./ dt_;
+% dt_ = parameter.dt;
+T2_time = (days(T2_date_-t_init_) + 1);
 
 behavioral_adaptation_ = parameter.behavioral_adaptation;
 
@@ -63,13 +63,12 @@ end
 
 n_group_ = parameter.n_group;
 n_comp_ = parameter.n_comp;
-dt_ = parameter.dt;
 y = reshape(y, n_group_, n_comp_);
 
 %% Group-Specific FOI
 v1 = sigma1_;
 v2 = sigma2_;
-beta_s = [beta_s_, v1*beta_s_, v2*beta_s_];
+beta_s = [beta_s_, v1 * beta_s_, v2 * beta_s_];
 uij = (meshgrid(u_)+meshgrid(u_)')./2;
 Nj = N_ * N_rate_;
 
@@ -78,7 +77,6 @@ lambda_m = zeros(1,n_group_);
 lambda_c = zeros(1,n_group_);
 
 for i = 1:4
-
     for k = 1:3 % u, v, p
         for j = 1:4
             lambda_m(i) = lambda_m(i) + m_Mij(i, j) * (1 - (1 - beta_s(k))^uij(i, j)) * (y(j, 4 * k - 1) + w_ * y(j, 4 * k)) / Nj(j);
@@ -87,10 +85,9 @@ for i = 1:4
     end
     lambda_m(i) = q_(i) * lambda_m(i);
     lambda_c(i) = alpha_c_(i) * lambda_c(i);
-
 end
 
-lambda = (lambda_c + lambda_m) .* dt_;
+lambda = (lambda_c + lambda_m);
 
 %% ODE
 
@@ -110,7 +107,7 @@ R_i = y(:, 13);
 H_i = y(:, 14);
 
 % Define the differential equations
-dS_ui_dt = -lambda' .* S_ui;
+dS_ui_dt = -(lambda' + phi1_' + mu_) .* S_ui + mu_ * Nj';
 dE_ui_dt = lambda' .* S_ui - (phi2_' + theta_ + mu_) .* E_ui;
 dI_ui_dt = theta_ .* E_ui - (delta + zeta_ + mu_ + mu_d_) .* I_ui;
 dY_ui_dt = delta .* I_ui - (gamma + zeta_ + mu_ + mu_d_) .* Y_ui;

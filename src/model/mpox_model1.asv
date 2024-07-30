@@ -11,7 +11,7 @@ mu_d_ = parameter.mu_d;
 T2_date_ = parameter.T2_date;
 t_init_ = parameter.t_init;
 dt_ = parameter.dt;
-T2_time = (days(T2_date_-t_init_) + 1) ./ dt_
+T2_time = (days(T2_date_-t_init_) + 1)./ dt_;
 
 behavioral_adaptation_ = parameter.behavioral_adaptation;
 
@@ -46,21 +46,19 @@ switch behavioral_adaptation_
         else
             delta = delta2_;
             gamma = gamma2_;
-            [m_Mij, m_Cij] = contact_matrices(parameter, alpha_c_ .* (1 - D));
+            alpha_c_ = alpha_c_ .* (1 - D);
+            [m_Mij, m_Cij] = contact_matrices(parameter, alpha_c_);
         end
 
     case 'june-july'
 
     case 'without'
-
         delta1_ = parameter.delta1;
         gamma1_ = parameter.gamma1;
-
 
         delta = delta1_;
         gamma = gamma1_;
         [m_Mij, m_Cij] = contact_matrices(parameter, alpha_c_);
-
 end
 
 n_group_ = parameter.n_group;
@@ -71,7 +69,7 @@ y = reshape(y, n_group_, n_comp_);
 %% Group-Specific FOI
 v1 = sigma1_;
 v2 = sigma2_;
-beta_s = [beta_s_, v1*beta_s_, v2*beta_s_];
+beta_s = [beta_s_, v1 * beta_s_, v2 * beta_s_];
 uij = (meshgrid(u_)+meshgrid(u_)')./2;
 Nj = N_ * N_rate_;
 
