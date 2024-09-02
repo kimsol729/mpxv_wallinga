@@ -10,8 +10,11 @@ prefix = '';
 suffix = '';
 result_path = '../result';
 
-filename = sprintf('%s/lsm_beta_result.mat', result_path);
-load(filename, 'beta_ols')
+filename = sprintf('%s/initial_states%s.mat', result_path, suffix);
+
+% Load or find equilibrium
+if isfile(filename)
+    load(filename, 'y0')
 
 dt = 0.1; % differential model 로 바꿔서 사실상 필요 없음
 t_init = datetime(2022, 4, 27);
@@ -32,7 +35,7 @@ params = {'n_group', 4 , false, 'Activity group'
     'dt', dt, false, 'Time step per day'
     'prop_past_vacc', [0.25, 0.25, 0.25, 0.25], false, 'Proportion of vaccinated in the past for activity group'
     
-    'beta_s', beta_ols, false, 'Transmission probability per sex act'
+    'beta_s', lsm_beta, false, 'Transmission probability per sex act'
     };
 
 parameter = params2parameter(params);
@@ -58,7 +61,7 @@ parameter.y0 = y0;
 [state, time] = run_mpox_model(parameter);
 
 
-data = readmatrix('../data/mpox_case_netherlands.csv', 'Range', 'C2:C91');
+data = readmatrix('../data/mpox_case_netherlands.csv', 'Range', 'B2:B91');
 data(isnan(data)) = 0;
 %% Calculate Incidence
 
