@@ -1,9 +1,9 @@
-clear 
+clear
 close all
 clc
 
 %%
-restoredefaultpath 
+restoredefaultpath
 addpath 'model' %'documentation'
 
 prefix = '';
@@ -32,68 +32,40 @@ parameter = params2parameter(params);
 
 
 %%
-    % Equilibrium filename
-    filename = sprintf('%s/initial_states%s.mat', result_path, suffix);
+% Equilibrium filename
+filename = sprintf('%s/initial_states%s.mat', result_path, suffix);
 
-    % Load or find equilibrium
-    if isfile(filename)
-        load(filename, 'y0')
-    else
-        y0 = find_initial(parameter);
-        save(filename, 'y0')
-    end
+% Load or find equilibrium
+if isfile(filename)
+    load(filename, 'y0')
+else
+    y0 = find_initial(parameter);
+    save(filename, 'y0')
+end
 
-    % Append
-    parameter.y0 = y0;
-    
+% Append
+parameter.y0 = y0;
+
 %% Run MPOX Model
 
-    [state, time] = run_mpox_model(parameter);
+[state, time] = run_mpox_model(parameter);
 
-    %%
-    % 
-    % z = squeeze(sum(state,1));
-    % g1 = squeeze(state(1, 3, :));
-    % g2 = squeeze(state(2, 3, :));
-    % g3 = squeeze(state(3, 3, :));
-    % g4 = squeeze(state(4, 3, :));
-    % % figure(1)
-    % % hold on
-    % % plot(t_span, z(3,:))
-    % % % plot(t_span, z(4,:))
-    % % xlim([t_init, t_termi])
-    % % hold off
-    % 
-    % figure(2)
-    % hold on 
-    % plot(t_span, z(3,:), 'linewidth', 2)
-    % plot(t_span, g1, 'linewidth', 2)
-    % plot(t_span, g2, 'linewidth', 2)
-    % plot(t_span, g3, 'linewidth', 2)
-    % plot(t_span, g4, 'linewidth', 2)
-    % legend('Total', 'very low', 'fairly low', 'fairly high', 'very high')
-    % xlim([t_init, t_termi])
-    % hold off
+%% Calculate Incidence
+clf; close all
 
-    %%
-        z = squeeze(sum(state,1));
-    g1 = squeeze(state(1, 4, :) + state(1, 8, :) + state(1, 12, :));
-    g2 = squeeze(state(2, 4, :) + state(2, 8, :) + state(2, 12, :));
-    g3 = squeeze(state(3, 4, :) + state(3, 8, :) + state(3, 12, :));
-    g4 = squeeze(state(4, 4, :) + state(4, 8, :) + state(4, 12, :));
-    
+[I_case, I_incidence, Y_case, Y_incidence, H_case, H_incidence ] = calculate_incidence(state, parameter);
+plot_data = I_incidence;
 
-    
-    figure(2)
-    hold on 
-    plot(t_span, z(4,:) + z(8,:) + z(12,:), 'linewidth', 2)
-    plot(t_span, g1, 'linewidth', 2)
-    plot(t_span, g2, 'linewidth', 2)
-    plot(t_span, g3, 'linewidth', 2)
-    plot(t_span, g4, 'linewidth', 2)
-    legend('Total', 'very low', 'fairly low', 'fairly high', 'very high')
-    xlim([t_init, t_termi])
-    hold off
-
-    %%
-    daily_cases = diff(I_vals) / dt;
+figure(2)
+hold on
+plot(t_span, plot_data(:,5), 'linewidth', 2)
+plot(t_span, plot_data(:,1), '-.', 'linewidth', 2)
+plot(t_span, plot_data(:,2), '-.', 'linewidth', 2)
+plot(t_span, plot_data(:,3), '-.', 'linewidth', 2)
+plot(t_span, plot_data(:,4), '-.', 'linewidth', 2)
+legend('Total', 'very low', 'fairly low', 'fairly high', 'very high','Location', 'northwest')
+xlim([t_init, t_termi])
+title(sprintf('With behavioral adaptations in %s 2022', b_a))
+xlabel('Date of symptom onset')
+ylabel('Daily number of mpox cases')
+hold off

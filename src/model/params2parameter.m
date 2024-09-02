@@ -22,8 +22,8 @@ switch behavioral_adaptation_
             'epsilon_m', 0.72, false, 'Assortativeness mixing with main partners'
             'epsilon_c', 0.87, false, 'Assortativeness mixing with casual partners'
             'vacc_p', 0.0004, false, 'Vaccination rate before 25 July 2022'
-            'sigma1', 0.56, false, 'Efficacy old vaccine'
-            'sigma2', 0.85, false, 'Efficacy new vaccine'
+            'sigma1', 1 - 0.56, false, 'Efficacy old vaccine'
+            'sigma2', 1 - 0.85, false, 'Efficacy new vaccine'
             'zeta', 0.01, false, 'Hospitalization rate'
             };
 

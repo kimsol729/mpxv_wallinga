@@ -4,7 +4,7 @@ function [m_Mij, m_Cij] = contact_matrices(parameter, alpha_c_)
 n_group_ = parameter.n_group;
 N_ = parameter.N;
 epsilon_m_ = parameter.epsilon_m;
-epsilon_c_ = parameter.epsilon_m;
+epsilon_c_ = parameter.epsilon_c;
 alpha_m_ = parameter.alpha_m;
 N_rate_ = parameter.N_rate;
 
